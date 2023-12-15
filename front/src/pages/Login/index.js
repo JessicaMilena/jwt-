@@ -1,4 +1,3 @@
-// Importações necessárias
 import React, { useState } from "react";
 import { Box, Paper, Typography, Grid, Link } from "@mui/material";
 import EntradaTexto from "../../components/EntradaTexto";
@@ -8,31 +7,29 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import * as AuthService from "../../services/AuthService";
 
-// Componente de Login
-export default function Login() {
-  const [cookies, setCookie] = useCookies(["jwt"]);
+export default function Registrar() {
+  const [cookies] = useCookies(["jwt"]);
   const navigate = useNavigate();
   const [mensagem, setMensagem] = useState("");
-  const [values, setValues] = useState({ email: "", senha: "" });
+  const [values, setValues] = useState({ nome: "", email: "", senha: "" });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const data = await AuthService.login(values);
+      const data = await AuthService.registrar(values, cookies.jwt);
 
       if (data) {
         if (data.errors) {
           console.error(data.errors);
-          setMensagem("Erro ao fazer login. Verifique seus dados.");
+          setMensagem("Erro ao cadastrar usuário");
         } else {
-          setCookie("jwt", data.accessToken, { path: "/" });
-          setMensagem("Logado com sucesso!");
-          navigate("/logado");
+          setMensagem("Usuário cadastrado com sucesso!");
+          navigate("/");
         }
       }
     } catch (ex) {
-      setMensagem("Ocorreu um erro durante o login. Verifique seus dados.");
+      setMensagem("Verifique os dados");
       console.error(ex);
     }
   };
@@ -42,10 +39,19 @@ export default function Login() {
       <form onSubmit={handleSubmit} sx={styles.form}>
         <Paper sx={styles.paper}>
           <Typography variant="h4" sx={styles.title}>
-            Logue-se no sistema
+            Cadastre-se no sistema
           </Typography>
           <EntradaTexto
-            id="outlined-required"
+            id="outlined-basic"
+            label="Nome"
+            name="nome"
+            type="text"
+            value={values.nome}
+            onChange={(e) => setValues({ ...values, nome: e.target.value })}
+          />
+          <Box sx={{ marginBottom: 3 }} />
+          <EntradaTexto
+            id="outlined-email-input"
             label="E-mail"
             name="email"
             type="email"
@@ -61,11 +67,10 @@ export default function Login() {
             value={values.senha}
             onChange={(e) => setValues({ ...values, senha: e.target.value })}
           />
-          <Botao title="Entrar" sx={styles.submitButton} />
-          <Link href="/registrar" sx={styles.registroLink}>
-            Não tem registro? Cadastre-se
+          <Botao title="Salvar" sx={styles.submitButton} />
+          <Link href="/" sx={styles.registroLink}>
+            Já tem uma conta? Faça login
           </Link>
-
           <Typography variant="body2" sx={styles.errorMessage}>
             {mensagem}
           </Typography>

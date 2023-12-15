@@ -1,4 +1,3 @@
-// Importações necessárias
 import React, { useState } from "react";
 import { Box, Paper, Typography, Grid, Link } from "@mui/material";
 import EntradaTexto from "../../components/EntradaTexto";
@@ -8,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import * as AuthService from "../../services/AuthService";
 
-// Componente de Registro
 export default function Registrar() {
   const [cookies] = useCookies(["jwt"]);
   const navigate = useNavigate();
@@ -36,7 +34,6 @@ export default function Registrar() {
     }
   };
 
-  // Estrutura do componente
   return (
     <Grid container sx={styles.container}>
       <form onSubmit={handleSubmit} sx={styles.form}>

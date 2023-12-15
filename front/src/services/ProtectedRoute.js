@@ -1,13 +1,16 @@
+// services/ProtectedRoute.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { verificarToken } from "./AuthService";
 import Carregando from "../components/Carregando";
-
+import axios from "axios";
 const cookies = new Cookies();
+
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -29,9 +32,12 @@ const ProtectedRoute = ({ children }) => {
     };
     verifyToken();
   }, [navigate]);
+
   if (isLoading) {
     return <Carregando />;
   }
+
   return children;
 };
+
 export default ProtectedRoute;

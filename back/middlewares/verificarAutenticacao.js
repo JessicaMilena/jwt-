@@ -1,7 +1,8 @@
+// middleware/authMiddleware.js
 const { verify, decode } = require("jsonwebtoken");
-const jsonSecret = require("../config/jsonSecret.js");
+const jsonSecret = require("../config/jsonSecret");
 
-module.exports = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -29,3 +30,5 @@ module.exports = async (req, res, next) => {
     }
   }
 };
+
+module.exports = authenticate;

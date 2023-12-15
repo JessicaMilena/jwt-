@@ -1,10 +1,18 @@
-const { Router } = require("express");
+// routes/cursos.js
+const express = require("express");
+const authenticate = require("../middlewares/verificarAutenticacao");
 const cursosController = require("../controllers/cursoController");
-const router = Router();
-router.get("/cursos", cursosController.getCursos);
-router.get("/cursos/:id", cursosController.getCursoPorId);
-router.post("/cursos", cursosController.postCurso);
-router.put("/cursos/:id", cursosController.putCurso);
-router.delete("/cursos/:id", cursosController.deleteCurso);
-router.get("/alunoscurso/:id", cursosController.getAlunosPorCurso);
+const router = express.Router();
+
+router.get("/cursos", authenticate, cursosController.getCursos);
+router.get("/cursos/:id", authenticate, cursosController.getCursoPorId);
+router.post("/cursos", authenticate, cursosController.postCurso);
+router.put("/cursos/:id", authenticate, cursosController.putCurso);
+router.delete("/cursos/:id", authenticate, cursosController.deleteCurso);
+router.get(
+  "/alunoscurso/:id",
+  authenticate,
+  cursosController.getAlunosPorCurso
+);
+
 module.exports = router;
